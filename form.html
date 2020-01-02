@@ -10,14 +10,14 @@
           <input type="text" v-model="id">
           <input type="text" v-model="name">
           <button type="button" @click="add">add</button>
-          关键字搜索：<input type="text" >
+          关键字搜索：<input type="text" v-model="keywords" >
       </form>
 
       <table width="500" border="1">
           <th>ID</th>
           <th>name</th>
           <th>option</th>
-          <tr v-for="item in list" :key="item.id">
+          <tr v-for="item in search(keywords)" :key="item.id">
               <td>{{item.id}}</td>
               <td>{{item.name}}</td>
               <td><a href="" @click.prevent="del(item.id)">del</a></td>
@@ -28,9 +28,10 @@
   <script>
       var vm = new Vue({
           el:'#app',
-          id:'',
-          name:'',
           data:{
+              id:'',
+              name:'',
+              keywords:'',
              list:[
                  {id:1,name:'zhang'},
                  {id:2,name:'li'},
@@ -49,6 +50,16 @@
                      }
                   });
               },
+
+              search(keywords){
+                  var newList = [];
+                  this.list.forEach(item=>{
+                      if(item.name.indexOf(keywords) != -1){
+                          newList.push(item)
+                      }
+                  })
+                  return newList;
+              }
 
           },
       })
