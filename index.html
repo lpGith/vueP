@@ -2,21 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>vue</title>
 </head>
 <body>
-<div id="app" v-text="msg">
-
+<div id="app">
+    <button type="button" @click="start" > start</button>
+    <button type="button" @click="stop" >stop</button>
+    <div v-text="msg"></div>
 </div>
 <script src="lib/vue.js"></script>
 <script>
     const vm = new Vue({
-        el:'#app',
-        data:{
-            msg:'hello vue!'
+        el: '#app',
+        data: {
+            msg: '大体上来说，layui 的模块定义很类似 Require.js 和 Sea.js，但跟他们又有着明显的不同，譬如在接口输出等地方。',
+            intervalID:null,
         },
-        methods:{
-
+        methods: {
+            start() {
+                this.intervalID = setInterval( () => {
+                    const start = this.msg.substr(0,1);
+                    const end = this.msg.substr(1)
+                    this.msg = end + start;
+                    },100)
+            },
+            stop(){
+               clearInterval(this.intervalID);
+                this.intervalID = null
+            },
         }
     })
 
