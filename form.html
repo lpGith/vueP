@@ -5,64 +5,64 @@
     <title>vue</title>
 </head>
 <body>
-  <div id="app">
-      <form action="">
-          <input type="text" v-model="id">
-          <input type="text" v-model="name">
-          <button type="button" @click="add">add</button>
-          关键字搜索：<input type="text" v-model="keywords" >
-      </form>
+<div id="app">
+    <form action="">
+        <input type="text" v-model="id">
+        <input type="text" v-model="name">
+        <button type="button" @click="add">add</button>
+        关键字搜索：<input type="text" v-model="keywords">
+    </form>
 
-      <table width="500" border="1">
-          <th>ID</th>
-          <th>name</th>
-          <th>option</th>
-          <tr v-for="item in search(keywords)" :key="item.id">
-              <td>{{item.id}}</td>
-              <td>{{item.name}}</td>
-              <td><a href="" @click.prevent="del(item.id)">del</a></td>
-          </tr>
-      </table>
-  </div>
-  <script src="lib/vue.js"></script>
-  <script>
-      var vm = new Vue({
-          el:'#app',
-          data:{
-              id:'',
-              name:'',
-              keywords:'',
-             list:[
-                 {id:1,name:'zhang'},
-                 {id:2,name:'li'},
-                 {id:3,name:'wang'},
-             ]
-          },
-          methods:{
-              add(){
-                 return this.list.push({id:this.id,name:this.name})
-              },
-              del(id){
-                 this.list.some((item,i)=>{
-                     if(item.id==id){
-                         this.list.splice(i,1);
-                         return true
-                     }
-                  });
-              },
+    <table width="500" border="1">
+        <th>ID</th>
+        <th>name</th>
+        <th>option</th>
+        <tr v-for="item in search(keywords)" :key="item.id">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td><a href="" @click.prevent="del(item.id)">del</a></td>
+        </tr>
+    </table>
+</div>
+<script src="lib/vue.js"></script>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            id: '',
+            name: '',
+            keywords: '',
+            list: [
+                {id: 1, name: 'zhang'},
+                {id: 2, name: 'li'},
+                {id: 3, name: 'wang'},
+            ]
+        },
+        methods: {
+            add() {
+                if(this.id != '' && this.name != '')
+                return this.list.push({id: this.id, name: this.name})
+            },
+            del(id) {
+                this.list.some((item, i) => {
+                    if (item.id == id) {
+                        this.list.splice(i, 1);
+                        return true
+                    }
+                });
+            },
 
-              search(keywords){
-                  var newList = [];
-                  this.list.forEach(item=>{
-                      if(item.name.indexOf(keywords) != -1){
-                          newList.push(item)
-                      }
-                  })
-                  return newList;
-              }
-
-          },
-      })
-  </script>
+            search(keywords) {
+                var newList = [];
+                this.list.forEach(item => {
+                    if (item.name.indexOf(keywords) != -1) {
+                        newList.push(item)
+                    }
+                })
+                return newList;
+            }
+        },
+    })
+</script>
 </body>
 </html>
