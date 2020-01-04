@@ -8,9 +8,9 @@
 <div id="app">
     <form action="">
         <input type="text" v-model="id">
-        <input type="text" v-model="name">
+        <input type="text" v-model="name" @keyup.f2="add">
         <button type="button" @click="add">add</button>
-        关键字搜索：<input type="text" v-model="keywords">
+        关键字搜索：<input type="text" v-model="keywords" v-focus>
     </form>
 
     <table width="500" border="1">
@@ -26,6 +26,33 @@
 </div>
 <script src="lib/vue.js"></script>
 <script>
+
+    //自定义指令
+    Vue.directive('focus', {
+        inserted: function (el) {
+            el.focus()
+
+        }
+    });
+
+    //按键修饰符
+    Vue.config.keyCodes.f2 = 113;
+
+    //自定义全局过滤器
+    Vue.filter('dateFormate',function (dateStr,pattern="") {
+        var d = new Date(dateStr),
+            y = d.getFullYear(),
+            m = d.getMonth()+1,
+            day = d.getDate(),
+            h = d.getHours(),
+            min = d.getMinutes(),
+            s = d.getSeconds()
+        if(pattern.toLocaleLowerCase()=='yyyy-mm-dd'){
+            return `${y}-${m}-${day}`
+        }else{
+            return `${y}-${m}-${day} ${h}:${min}:${s}`;
+        }
+    });
     var vm = new Vue({
         el: '#app',
         data: {
@@ -40,8 +67,8 @@
         },
         methods: {
             add() {
-                if(this.id != '' && this.name != '')
-                return this.list.push({id: this.id, name: this.name})
+                if (this.id != '' && this.name != '')
+                    return this.list.push({id: this.id, name: this.name})
             },
             del(id) {
                 this.list.some((item, i) => {
