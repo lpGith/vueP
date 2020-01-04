@@ -25,6 +25,7 @@
     </table>
 </div>
 <script src="lib/vue.js"></script>
+<script src="https://cdn.bootcss.com/vue-resource/1.5.1/vue-resource.js"></script>
 <script>
 
     //自定义指令
@@ -39,20 +40,28 @@
     Vue.config.keyCodes.f2 = 113;
 
     //自定义全局过滤器
-    Vue.filter('dateFormate',function (dateStr,pattern="") {
+    Vue.filter('dateFormat', function (dateStr, pattern = "") {
         var d = new Date(dateStr),
             y = d.getFullYear(),
-            m = d.getMonth()+1,
+            m = d.getMonth() + 1,
             day = d.getDate(),
             h = d.getHours(),
             min = d.getMinutes(),
             s = d.getSeconds()
-        if(pattern.toLocaleLowerCase()=='yyyy-mm-dd'){
+        if (pattern.toLocaleLowerCase() == 'yyyy-mm-dd') {
             return `${y}-${m}-${day}`
-        }else{
+        } else {
             return `${y}-${m}-${day} ${h}:${min}:${s}`;
         }
     });
+
+    //全局根域名配置
+    Vue.http.option.root = 'http://vue.studyit.io';
+
+    //全局表单提交配置
+    Vue.http.option.emulateJSON = true;
+
+
     var vm = new Vue({
         el: '#app',
         data: {
@@ -60,25 +69,24 @@
             name: '',
             keywords: '',
             list: [
-                {id: 1, name: 'zhang'},
+                {id: 1, ctime: new Date(), name: 'zhang'},
                 {id: 2, name: 'li'},
                 {id: 3, name: 'wang'},
             ]
         },
         methods: {
-            add() {
-                if (this.id != '' && this.name != '')
-                    return this.list.push({id: this.id, name: this.name})
-            },
-            del(id) {
-                this.list.some((item, i) => {
-                    if (item.id == id) {
-                        this.list.splice(i, 1);
-                        return true
-                    }
-                });
-            },
-
+            // add() {
+            //     if (this.id != '' && this.name != '')
+            //         return this.list.push({id: this.id, name: this.name})
+            // },
+            // del(id) {
+            //     this.list.some((item, i) => {
+            //         if (item.id == id) {
+            //             this.list.splice(i, 1);
+            //             return true
+            //         }
+            //     });
+            // },
             search(keywords) {
                 var newList = [];
                 this.list.forEach(item => {
@@ -87,8 +95,39 @@
                     }
                 })
                 return newList;
+            },
+            getList() {
+                this.$http.get('api/getprodlist').then(res => {
+                    if (res.body.status == 0) {
+                        this.list = res.body.message
+                    } else {
+                        alert('获取数据失败')
+                    }
+                })
+            },
+            add() {
+                this.$http.post('api/addprod', {name: this.name}).then(res => {
+                    if (res.body.status == 0) {
+                        this.getList()
+                    } else {
+                        alert('添加失败')
+                    }
+                })
+            },
+            del(id) {
+                this.$http.get('api/' + id).then(res => {
+                    if (res.body.status == 0) {
+                        this.getList()
+                    } else {
+                        alert('删除失败')
+                    }
+                })
             }
+
         },
+        created: function () {
+            this.getList()
+        }
     })
 </script>
 </body>
