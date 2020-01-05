@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>第三方插件实现动画</title>
+    <link rel="stylesheet" href="lib/animate.css">
+</head>
+<body>
+<div id="app">
+    <input type="button" value="toggle" @click="flag=!flag">
+    <transition
+        enter-active-class = "bounceIn";
+        leave-active-class = "bounceOut"
+        :duration = "{enter:200,leave:400}">
+        <h3 v-if="flag" class="animated">this is h3</h3>
+    </transition>
+</div>
+</body>
+<script src="lib/vue.js"></script>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            flag: false
+        },
+        methods: {}
+    })
+</script>
+</html>
