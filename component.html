@@ -19,8 +19,8 @@
    <div id="app">
        <a href="" @click.prevent="comName='login'">登录</a>
        <a href="" @click.prevent="comName='register'">注册</a>
-<!--       component 占位符 :-->
-<!--       组件切换动画模is属性后跟组件名字式-->
+<!--       component 占位符 :is属性后跟组件名字式---->
+<!--       组件切换动画模式 >
        <transition mode="out-in">
            <component :is="comName"></component>
        </transition>
