@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>父子组件案例</title>
+    <link rel="stylesheet" href="lib/bootstrap.css">
+</head>
+<body>
+<div id="app">
+    <mycom @func="loadComent"></mycom>
+    <ul class="list-group">
+        <li class="list-group-item" v-for="item in list" @key="item.id">
+            {{item.coment}}
+            <span class="badge">评论人:{{item.name}}</span>
+        </li>
+    </ul>
+</div>
+<template id="tmp">
+    <div>
+        <div class="group-form">
+            <label>评论人:</label>
+            <input type="text" class="form-control" v-model="user">
+        </div>
+        <div class="group-form">
+            <label>评论内容:</label>
+            <textarea class="form-control" v-model="content"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="button" value="发表评论" class="btn btn-primary" @click="post">
+        </div>
+    </div>
+</template>
+</body>
+<script src="lib/vue.js"></script>
+<script>
+    //定义子组件
+    var mycom = {
+        template: '#tmp',
+        data(){
+            return {
+                user:'',
+                content:'',
+            }
+        },
+        methods:{
+            post(){
+                var comment = {id:Date.now(),name:this.user,comment:this.content};
+                //从localstorage获取所有的评论,并转化为json对象
+                var list = JSON.parse(localStorage.getItem('cmts') || '[]');
+                list.unshift(comment);
+                //将新的json对象转换为json字符串存入localstorage
+                localStorage.setItem('cmts',JSON.stringify(list));
+                this.name = this.content ='';
+                this.$emit('func')
+            }
+        }
+    };
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            list: [
+                {id: Date.now(), name: '李白', coment: '天生我材必有用'},
+                {id: Date.now(), name: '杜甫', coment: '大庇天下寒士俱欢颜'},
+                {id: Date.now(), name: '苏轼', coment: '老夫聊花少年狂'},
+
+            ]
+        },
+        created(){
+            this.loadComent()
+        },
+        methods: {
+            loadComent(){
+                var list = JSON.parse(localStorage.getItem('cmts') || '[]');
+                this.list = list;
+            }
+        },
+        components: {
+            mycom
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>父组件向子组件传值</title>
+</head>
+<body>
+<div id="app">
+    <mycom v-bind:parentmsg="msg"></mycom>
+</div>
+</body>
+<script src="lib/vue.js"></script>
+<script>
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            msg: '父组件中的数据'
+        },
+        methods: {},
+        components: {
+            mycom: {
+                template: '<h1>这是一个大大的h1{{parentmsg}}</h1>',
+                props: ['parentmsg'],//定义父组件中的数据
+                data() {
+                    return {
+                        id: 1,
+                        title: 'name',
+                    }
+                },
+            }
+        }
+    })
+</script>
+</html>
