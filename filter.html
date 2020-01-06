@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>filter</title>
+    <style>
+        tr:hover{
+            background: hotpink;
+            transition: all 0.6s ease;
+        }
+        .my-enter,
+        .my-leave-to{
+            opacity: 0;
+            transform: translateY(80px);
+        }
+        .my-enter-active,
+        .my-leave-active{
+            transition: all 0.6s ease;
+        }
+
+        .my-move{
+            transition: all 0.6s ease;
+        }
+        .my-leave-active{
+            position: absolute;
+        }
+
+    </style>
+</head>
+<body>
+  <div id="app">
+      <div>
+          <label>ID</label>
+          <input type="text" v-model="id">
+          <label>Name</label>
+          <input type="text" v-model="name">
+          <input type="button" value="add" @click="add">
+          关键字搜索：<input type="text" v-model="keywords" v-focus>
+      </div>
+     <table border="1" width="500">
+         <th>ID</th>
+         <th>Name</th>
+<!--         表格过渡动画-->
+         <tbody is="transition-group" appear name="my">
+             <tr v-for="(item,i) in search(keywords)" :key="item.id" @click="del(i)">
+                 <td>{{item.id}}</td>
+                 <td>{{item.name}}</td>
+             </tr>
+         </tbody>
+
+     </table>
+  </div>
+</body>
+<script src="lib/vue.js"></script>
+<script>
+    // 定义获取焦点指令
+    Vue.directive('focus',{
+        inserted:function (el) {
+          el.focus();
+        }
+    })
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            id:'',
+            name:'',
+            keywords:'',
+            list:[
+                {id:1,name:'zhang'},
+                {id:2,name:'wang'},
+                {id:3,name:'zhao'},
+            ]
+        },
+        methods:{
+            add(){
+                if(this.id && this.name !='')
+                this.list.push({id:this.id,name:this.name})
+                this.id = this.name = '';
+            },
+            del(i){
+              this.list.splice(i,1);
+            },
+            search(keywords){
+             return this.list.filter((item,i)=>{
+                 if(item.name.indexOf(keywords) != -1){
+                    return item;
+                  }
+              })
+            },
+        },
+    })
+</script>
+</html>
