@@ -3,36 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <title>vue-router</title>
+    <style>
+        .router-link-active{
+            font-size: 30px;
+            color:red;
+            font-weight: bold;
+            font-style: italic;
+        }
+        .v-enter,
+        .v-leave-to{
+            opacity: 0;
+            transform: translateX(10px);
+        }
+        .v-enter-active,
+        .v-leave-active{
+            transition: all 0.5s ease;
+        }
+    </style>
 </head>
 <body>
-   <div id="app">
-       <router-link to="/login">登录</router-link>
-       <router-link to="/register">注册</router-link>
-       <router-view></router-view>
-   </div>
+<div id="app">
+    <router-link to="/login?id=10">登录</router-link>
+    <router-link to="/register">注册</router-link>
+    <transition mode="out-in">
+        <router-view></router-view>
+    </transition>
+
+</div>
 
 </body>
 <script src="lib/vue.js"></script>
 <script src="lib/vue-router.js"></script>
 <script>
     var login = {
-      template:'<h3>登陆</h3>'
+        template: '<h3>登录id为:{{this.$route.query.id}}</h3>',
+        created(){
+            console.log(this.$route.query.id);
+        },
+        data(){
+            return {
+                msg:'know'
+            }
+        },
     };
     var register = {
-        template:'<h3>注册</h3>'
+        template: '<h3>注册</h3>'
     };
     //定义路由对象
     var routerObj = new VueRouter({
-        routes:[
-            {path:'/login',component:login},
-            {path:'/register',component:register},
-        ]
+        routes: [
+            {path: '/login', component: login},
+            {path: '/register', component: register},
+        ],
+        routeActiveClass:''//自定义高亮显示类名
     });
     var vm = new Vue({
-        el:'#app',
-        data:{},
-        methods:{},
-        router:routerObj,
+        el: '#app',
+        data: {},
+        methods: {},
+        router: routerObj,
     })
 </script>
 </html>
