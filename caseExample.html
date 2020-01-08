@@ -10,11 +10,12 @@
     <mycom @func="loadComent"></mycom>
     <ul class="list-group">
         <li class="list-group-item" v-for="item in list" @key="item.id">
-            {{item.coment}}
+            {{item.comment}}
             <span class="badge">评论人:{{item.name}}</span>
         </li>
     </ul>
 </div>
+<!--子组件模版html-->
 <template id="tmp">
     <div>
         <div class="group-form">
@@ -30,6 +31,7 @@
         </div>
     </div>
 </template>
+<!--子组件模版-->
 </body>
 <script src="lib/vue.js"></script>
 <script>
@@ -50,7 +52,7 @@
                 list.unshift(comment);
                 //将新的json对象转换为json字符串存入localstorage
                 localStorage.setItem('cmts',JSON.stringify(list));
-                this.name = this.content ='';
+                this.user = this.content ='';
                 this.$emit('func')
             }
         }
@@ -59,10 +61,9 @@
         el: '#app',
         data: {
             list: [
-                {id: Date.now(), name: '李白', coment: '天生我材必有用'},
-                {id: Date.now(), name: '杜甫', coment: '大庇天下寒士俱欢颜'},
-                {id: Date.now(), name: '苏轼', coment: '老夫聊花少年狂'},
-
+                {id: Date.now(), name: '李白', comment: '天生我材必有用'},
+                {id: Date.now(), name: '杜甫', comment: '大庇天下寒士俱欢颜'},
+                {id: Date.now(), name: '苏轼', comment: '老夫聊花少年狂'},
             ]
         },
         created(){
@@ -70,8 +71,7 @@
         },
         methods: {
             loadComent(){
-                var list = JSON.parse(localStorage.getItem('cmts') || '[]');
-                this.list = list;
+                this.list = JSON.parse(localStorage.getItem('cmts') || '[]');
             }
         },
         components: {
