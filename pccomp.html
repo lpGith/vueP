@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>component</title>
+    <link rel="stylesheet" href="lib/bootstrap.css">
+</head>
+<body>
+<div id="app">
+    <mycom :pmsg="msg"></mycom>
+</div>
+<template id="tmp">
+    <div>
+        <div class="form-group">
+            <input type="button" class="btn btn-primary" @click="myclick" value="click">
+        </div>
+    </div>
+</template>
+</body>
+<script src="lib/vue.js"></script>
+<script>
+
+    //定义子组件
+    var mycom = {
+        template: '#tmp',
+        data() {
+            return {
+                id: Date.now(),
+            }
+        },
+        props: ['pmsg'],
+        methods: {
+            myclick() {
+                console.log(this.pmsg)
+            }
+        },
+    }
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            msg: '12345'
+        },
+        methods: {
+            show(params) {
+                console.log(' 这是父组件中的方法' + params)
+            }
+        },
+        components: {
+            mycom
+        }
+    })
+
+</script>
+</html>
