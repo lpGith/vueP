@@ -5,10 +5,10 @@
     <title>嵌套路由</title>
 </head>
 <body>
-   <div id="app">
-       <router-link to="/account">account</router-link>
-       <router-view></router-view>
-   </div>
+<div id="app">
+    <router-link to="/account">account</router-link>
+    <router-view></router-view>
+</div>
 <template id="tmp">
     <div>
         <h1>这是account组件</h1>
@@ -23,31 +23,31 @@
 <script src="lib/vue-router.js"></script>
 <script>
     var account = {
-        template:'#tmp'
+        template: '#tmp'
     }
     var login = {
         template: '<h3>登录</h3>'
     }
     var register = {
-        template:'<h3>注册</h3>'
+        template: '<h3>注册</h3>'
     }
 
     var router = new VueRouter({
-        routes:[
+        routes: [
             {
-                path:'/account',
-                component:account,
-                children:[
-                    {path:'login',component: login},
-                    {path:'register',component: register},
+                path: '/account',
+                component: account,
+                children: [
+                    {path: 'login', component: login},
+                    {path: 'register', component: register},
                 ]
             }
         ]
     })
     var vm = new Vue({
-        el:'#app',
-        data:{},
-        methods:{},
+        el: '#app',
+        data: {},
+        methods: {},
         router,
     })
 </script>
