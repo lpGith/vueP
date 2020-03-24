@@ -81,7 +81,7 @@
               this.list.splice(i,1);
             },
             search(keywords){
-             return this.list.filter((item)=>{
+             return this.list.filter((item,i)=>{
                  if(item.name.indexOf(keywords) != -1){
                     return item;
                   }
